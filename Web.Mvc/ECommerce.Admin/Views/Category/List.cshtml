@@ -1,0 +1,34 @@
+﻿@model List<App.Data.Entities.Category>
+
+@{
+    ViewData["Title"] = "Kategori Listesi";
+}
+
+<h1>Kategori Listesi</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Ad</th>
+            <th>Color</th>
+            <th>Icon</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Id</td>
+                <td>@c.Name</td>
+                <td>
+                    <span style="display:inline-block;width:18px;height:18px;background:#@c.Color;border:1px solid #ccc;border-radius:4px;"></span>
+                    #@c.Color
+                </td>
+
+                <td><i class="@c.IconCssClass"></i> @c.IconCssClass</td>
+
+            </tr>
+        }
+    </tbody>
+</table>
