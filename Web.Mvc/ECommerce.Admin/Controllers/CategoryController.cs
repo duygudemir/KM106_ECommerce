@@ -88,7 +88,26 @@ namespace ECommerce.Admin.Controllers
 
         public IActionResult Delete(int id)
         {
-            return View();
+            var category = _db.Categories.Find(id);
+
+            if (category == null)
+                return NotFound();
+
+            return View(category);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var category = _db.Categories.Find(id);
+
+            if (category == null)
+                return NotFound();
+
+            _db.Categories.Remove(category);
+            _db.SaveChanges();
+
+            return RedirectToAction("List");
         }
     }
 }
