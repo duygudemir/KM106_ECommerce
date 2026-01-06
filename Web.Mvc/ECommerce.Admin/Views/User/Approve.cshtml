@@ -1,5 +1,26 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model App.Data.Entities.User
+
 @{
+    ViewData["Title"] = "Kullanıcı Onayla";
 }
+
+<h1>Kullanıcı Onayla</h1>
+
+<div class="alert alert-info">
+    Bu kullanıcıyı onaylamak üzeresin. Emin misin?
+</div>
+
+<ul>
+    <li><strong>Id:</strong> @Model.Id</li>
+    <li><strong>Ad Soyad:</strong> @Model.FirstName @Model.LastName</li>
+    <li><strong>Email:</strong> @Model.Email</li>
+    <li><strong>Rol:</strong> @(Model.Role != null ? Model.Role.Name : "-")</li>
+    <li><strong>Enabled:</strong> @Model.Enabled</li>
+</ul>
+
+<form asp-action="ApproveConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <button type="submit" class="btn btn-primary">Evet, Onayla</button>
+    <a asp-action="List" class="btn btn-secondary">Vazgeç</a>
+</form>
