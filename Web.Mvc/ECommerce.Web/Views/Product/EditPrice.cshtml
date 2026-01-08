@@ -1,0 +1,26 @@
+﻿@model ECommerce.Web.Models.ProductEditPriceVm
+
+@{
+    ViewData["Title"] = "Fiyat Güncelle";
+}
+
+<h1>Fiyat Güncelle</h1>
+
+<form asp-action="EditPrice" method="post" class="mt-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="MyProducts" class="btn btn-secondary">İptal</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

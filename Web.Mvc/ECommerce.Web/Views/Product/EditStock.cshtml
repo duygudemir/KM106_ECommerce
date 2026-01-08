@@ -1,0 +1,26 @@
+﻿@model ECommerce.Web.Models.ProductEditStockVm
+
+@{
+    ViewData["Title"] = "Stok Güncelle";
+}
+
+<h1>Stok Güncelle</h1>
+
+<form asp-action="EditStock" method="post" class="mt-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label asp-for="StockAmount" class="form-label"></label>
+        <input asp-for="StockAmount" class="form-control" />
+        <span asp-validation-for="StockAmount" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="MyProducts" class="btn btn-secondary">İptal</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
