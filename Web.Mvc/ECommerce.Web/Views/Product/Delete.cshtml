@@ -1,5 +1,26 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model App.Data.Entities.Product
+
 @{
+    ViewData["Title"] = "Ürün Sil";
 }
+
+<h1>Ürün Sil</h1>
+
+<div class="alert alert-warning">
+    Bu ürünü silmek üzeresin. Emin misin?
+</div>
+
+<ul>
+    <li><strong>Id:</strong> @Model.Id</li>
+    <li><strong>Ad:</strong> @Model.Name</li>
+    <li><strong>Fiyat:</strong> @Model.Price</li>
+    <li><strong>Stok:</strong> @Model.StockAmount</li>
+    <li><strong>Enabled:</strong> @Model.Enabled</li>
+</ul>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <button type="submit" class="btn btn-danger">Evet, Sil</button>
+    <a asp-action="MyProducts" class="btn btn-secondary">Vazgeç</a>
+</form>
