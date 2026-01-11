@@ -175,6 +175,19 @@ namespace ECommerce.Web.Controllers
             return RedirectToAction("MyProducts");
         }
 
+        public IActionResult Index()
+        {
+            var products = _db.Products
+                .Include(p => p.Category)
+                .Include(p => p.Seller)
+                .Where(p => p.Enabled)
+                .OrderByDescending(p => p.Id)
+                .ToList();
+
+            return View(products);
+        }
+
+
 
 
         public IActionResult Comment(int productId)
