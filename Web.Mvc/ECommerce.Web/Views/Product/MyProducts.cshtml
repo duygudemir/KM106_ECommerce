@@ -34,6 +34,20 @@
                 <td>
                     <a asp-action="EditPrice" asp-route-id="@p.Id" class="btn btn-sm btn-warning">Fiyat</a>
                     <a asp-action="EditStock" asp-route-id="@p.Id" class="btn btn-sm btn-info ms-2">Stok</a>
+                    <form asp-action="ToggleEnabled" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@p.Id" />
+                        @if (p.Enabled)
+                        {
+                            <button type="submit" class="btn btn-sm btn-secondary ms-2">Pasif Yap</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-sm btn-success ms-2">Aktif Yap</button>
+                        }
+                    </form>
+
+                    <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-sm btn-danger ms-2">Sil</a>
+                
                 </td>
 
             </tr>

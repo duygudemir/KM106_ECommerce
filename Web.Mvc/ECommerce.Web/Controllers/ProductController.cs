@@ -3,6 +3,8 @@ using App.Data.Entities;
 using ECommerce.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace ECommerce.Web.Controllers
 {
@@ -132,11 +134,61 @@ namespace ECommerce.Web.Controllers
             return RedirectToAction("MyProducts");
         }
 
+        [HttpPost]
+        public IActionResult ToggleEnabled(int id)
+        {
+            var sellerId = 1;
+
+            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == sellerId);
+            if (product == null)
+                return NotFound();
+
+            product.Enabled = !product.Enabled;
+            _db.SaveChanges();
+
+            return RedirectToAction("MyProducts");
+        }
+
 
         public IActionResult Delete(int id)
         {
-            return View();
+            var sellerId = 1;
+
+            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == sellerId);
+            if (product == null)
+                return NotFound();
+
+            return View(product);
         }
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var sellerId = 1;
+
+            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == sellerId);
+            if (product == null)
+                return NotFound();
+
+            _db.Products.Remove(product);
+            _db.SaveChanges();
+
+            return RedirectToAction("MyProducts");
+        }
+
+        public IActionResult Index()
+        {
+            var products = _db.Products
+                .Include(p => p.Category)
+                .Include(p => p.Seller)
+                .Where(p => p.Enabled)
+                .OrderByDescending(p => p.Id)
+                .ToList();
+
+            return View(products);
+        }
+
+
+
 
         public IActionResult Comment(int productId)
         {

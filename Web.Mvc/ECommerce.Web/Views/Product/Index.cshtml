@@ -1,0 +1,29 @@
+﻿@model List<App.Data.Entities.Product>
+
+@{
+    ViewData["Title"] = "Ürünler";
+}
+
+<h1>Ürünler</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ad</th>
+            <th>Fiyat</th>
+            <th>Kategori</th>
+            <th>Satıcı</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Name</td>
+                <td>@p.Price</td>
+                <td>@(p.Category != null ? p.Category.Name : "-")</td>
+                <td>@(p.Seller != null ? p.Seller.FirstName + " " + p.Seller.LastName : "-")</td>
+            </tr>
+        }
+    </tbody>
+</table>
