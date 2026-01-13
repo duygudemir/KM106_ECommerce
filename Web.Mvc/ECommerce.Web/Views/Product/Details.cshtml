@@ -1,0 +1,37 @@
+﻿@model App.Data.Entities.Product
+
+@{
+    ViewData["Title"] = "Ürün Detayı";
+    var comments = ViewBag.Comments as List<App.Data.Entities.ProductComment> ?? new();
+}
+
+<h1>Ürün Detayı</h1>
+
+<div class="mb-3">
+    <div><strong>Ad:</strong> @Model.Name</div>
+    <div><strong>Fiyat:</strong> @Model.Price</div>
+    <div><strong>Stok:</strong> @Model.StockAmount</div>
+    <div><strong>Kategori:</strong> @(Model.Category?.Name ?? "-")</div>
+    <div><strong>Satıcı:</strong> @(Model.Seller != null ? Model.Seller.FirstName + " " + Model.Seller.LastName : "-")</div>
+</div>
+
+<a asp-action="Comment" asp-route-productId="@Model.Id" class="btn btn-success mb-4">Yorum Yap</a>
+
+<h3>Yorumlar (Onaylı)</h3>
+
+@if (!comments.Any())
+{
+    <div class="text-muted">Henüz onaylı yorum yok.</div>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var c in comments)
+        {
+            <li class="list-group-item">
+                <div><strong>Yıldız:</strong> @c.StarCount / 5</div>
+                <div>@c.Text</div>
+            </li>
+        }
+    </ul>
+}

@@ -226,5 +226,26 @@ namespace ECommerce.Web.Controllers
 
             return RedirectToAction("Details", new { id = vm.ProductId });
         }
+
+        public IActionResult Details(int id)
+        {
+            var product = _db.Products
+                .Include(p => p.Category)
+                .Include(p => p.Seller)
+                .FirstOrDefault(p => p.Id == id && p.Enabled);
+
+            if (product == null)
+                return NotFound();
+
+            var comments = _db.ProductComments
+                .Include(c => c.User)
+                .Where(c => c.ProductId == id && c.IsConfirmed)
+                .OrderByDescending(c => c.Id)
+                .ToList();
+
+            ViewBag.Comments = comments;
+            return View(product);
+        }
+
     }
 }
