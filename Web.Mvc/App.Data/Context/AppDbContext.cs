@@ -18,11 +18,25 @@ namespace App.Data.Context
         public DbSet<User> Users => Set<User>();
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<Product> Products => Set<Product>();
+        public DbSet<ProductComment> ProductComments => Set<ProductComment>();
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ProductComment>()
+                .HasOne(pc => pc.User)
+                .WithMany()
+                .HasForeignKey(pc => pc.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Seller)
+                .WithMany()
+                .HasForeignKey(p => p.SellerId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             var seedDate = new DateTime(2026, 1, 1);
 

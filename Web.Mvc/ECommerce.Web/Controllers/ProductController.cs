@@ -188,11 +188,64 @@ namespace ECommerce.Web.Controllers
         }
 
 
-
-
         public IActionResult Comment(int productId)
         {
-            return View();
+            var product = _db.Products.FirstOrDefault(p => p.Id == productId && p.Enabled);
+            if (product == null)
+                return NotFound();
+
+            var vm = new ProductCommentCreateVm
+            {
+                ProductId = productId
+            };
+
+            return View(vm);
         }
+
+        [HttpPost]
+        public IActionResult Comment(ProductCommentCreateVm vm)
+        {
+            if (!ModelState.IsValid)
+                return View(vm);
+
+            
+            var currentUserId = 1;
+
+            var comment = new ProductComment
+            {
+                ProductId = vm.ProductId,
+                UserId = currentUserId,
+                Text = vm.Text,
+                StarCount = (byte)vm.StarCount,
+                IsConfirmed = false,
+                CreatedAt = DateTime.Now
+            };
+
+            _db.ProductComments.Add(comment);
+            _db.SaveChanges();
+
+            return RedirectToAction("Details", new { id = vm.ProductId });
+        }
+
+        public IActionResult Details(int id)
+        {
+            var product = _db.Products
+                .Include(p => p.Category)
+                .Include(p => p.Seller)
+                .FirstOrDefault(p => p.Id == id && p.Enabled);
+
+            if (product == null)
+                return NotFound();
+
+            var comments = _db.ProductComments
+                .Include(c => c.User)
+                .Where(c => c.ProductId == id && c.IsConfirmed)
+                .OrderByDescending(c => c.Id)
+                .ToList();
+
+            ViewBag.Comments = comments;
+            return View(product);
+        }
+
     }
 }
