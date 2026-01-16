@@ -1,5 +1,56 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<App.Data.Entities.ProductComment>
+
 @{
+    ViewData["Title"] = "Yorumlar";
 }
+
+<h1>Yorumlar</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Ürün</th>
+            <th>Kullanıcı</th>
+            <th>Yıldız</th>
+            <th>Yorum</th>
+            <th>Onay</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Id</td>
+                <td>@(c.Product != null ? c.Product.Name : "-")</td>
+                <td>@(c.User != null ? c.User.FirstName + " " + c.User.LastName : "-")</td>
+                <td>@c.StarCount</td>
+                <td>@c.Text</td>
+                <td>
+                    @if (c.IsConfirmed)
+                    {
+                        <span class="badge bg-success">Onaylı</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Bekliyor</span>
+                    }
+                </td>
+                <td>
+                    @if (!c.IsConfirmed)
+                    {
+                        <a asp-action="Approve" asp-route-id="@c.Id" class="btn btn-sm btn-primary">
+                            Approve
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">-</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
