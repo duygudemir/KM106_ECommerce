@@ -21,6 +21,10 @@ namespace App.Data.Context
 
         public DbSet<ProductComment> ProductComments => Set<ProductComment>();
 
+        public DbSet<Cart> Carts => Set<Cart>();
+        public DbSet<CartItem> CartItems => Set<CartItem>();
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -59,6 +63,25 @@ namespace App.Data.Context
                 new Category { Id = 9, Name = "Aksesuar", Color = "34495E", IconCssClass = "bi bi-watch", CreatedAt = seedDate },
                 new Category { Id = 10, Name = "Market", Color = "95A5A6", IconCssClass = "bi bi-cart", CreatedAt = seedDate }
             );
+
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Seller)
+                .WithMany()
+                .HasForeignKey(p => p.SellerId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Product)
+                .WithMany()
+                .HasForeignKey(ci => ci.ProductId)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
 
     }
