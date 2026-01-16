@@ -1,0 +1,56 @@
+﻿@model App.Data.Entities.Cart
+
+@{
+    ViewData["Title"] = "Sepet";
+}
+
+<h1>Sepet</h1>
+
+@if (!Model.CartItems.Any())
+{
+    <div class="alert alert-info">Sepetiniz boş.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ürün</th>
+                <th>Fiyat</th>
+                <th>Adet</th>
+                <th>Ara Toplam</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CartItems)
+            {
+                <tr>
+                    <td>@(item.Product != null ? item.Product.Name : "-")</td>
+                    <td>@(item.Product != null ? item.Product.Price : 0)</td>
+
+                    <td>
+                        <form asp-action="UpdateQuantity" method="post" class="d-flex gap-2">
+                            <input type="hidden" name="cartItemId" value="@item.Id" />
+                            <input type="number" name="quantity" value="@item.Quantity" min="1" max="5" class="form-control" style="width:90px;" />
+                            <button type="submit" class="btn btn-sm btn-warning">Güncelle</button>
+                        </form>
+                    </td>
+
+                    <td>
+                        @((item.Product != null ? item.Product.Price : 0) * item.Quantity)
+                    </td>
+
+                    <td>
+                        <form asp-action="Remove" method="post">
+                            <input type="hidden" name="cartItemId" value="@item.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger">Sil</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4 class="mt-3">Toplam: <strong>@Model.TotalPrice</strong></h4>
+}

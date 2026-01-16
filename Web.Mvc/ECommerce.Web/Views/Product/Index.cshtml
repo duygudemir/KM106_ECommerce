@@ -14,6 +14,8 @@
             <th>Kategori</th>
             <th>Satıcı</th>
             <th>İşlemler</th>
+            <th>Sepet</th>
+
 
         </tr>
     </thead>
@@ -30,6 +32,12 @@
                         Detay
                     </a>
                 </td>
+                <td>
+                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@p.Id" class="btn btn-sm btn-success">
+                        Sepete Ekle
+                    </a>
+                </td>
+
             </tr>
         }
     </tbody>
