@@ -1,0 +1,47 @@
+﻿@model List<App.Data.Entities.Order>
+
+@{
+    ViewData["Title"] = "Siparişlerim";
+}
+
+<h1>Siparişlerim</h1>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Henüz sipariş yok.</div>
+}
+else
+{
+    @foreach (var o in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                <strong>Sipariş #@o.Id</strong> - @o.CreatedAt - Toplam: @o.TotalPrice
+            </div>
+
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Ürün</th>
+                            <th>Adet</th>
+                            <th>Birim Fiyat</th>
+                            <th>Ara Toplam</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in o.OrderItems)
+                        {
+                            <tr>
+                                <td>@(item.Product != null ? item.Product.Name : "-")</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.UnitPrice</td>
+                                <td>@(item.UnitPrice * item.Quantity)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+}
