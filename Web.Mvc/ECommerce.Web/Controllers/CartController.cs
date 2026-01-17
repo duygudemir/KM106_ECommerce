@@ -80,6 +80,8 @@ namespace ECommerce.Web.Controllers
                     Quantity = (byte)quantity
                 });
             }
+            _db.SaveChanges();
+
 
             RecalculateCartTotal(cart.Id);
 
