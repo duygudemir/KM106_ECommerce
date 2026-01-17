@@ -33,9 +33,11 @@ namespace ECommerce.Web.Controllers
                 TotalPrice = cart.TotalPrice
             };
 
+
             foreach (var item in cart.CartItems)
             {
                 if (item.Product == null) continue;
+
 
                 order.OrderItems.Add(new OrderItem
                 {
@@ -44,6 +46,7 @@ namespace ECommerce.Web.Controllers
                     UnitPrice = item.Product.Price
                 });
             }
+            
 
             _db.Orders.Add(order);
 
