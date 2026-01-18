@@ -1,0 +1,31 @@
+﻿@model ECommerce.Web.Models.RegisterViewModel
+
+<h2>Register</h2>
+
+<form method="post">
+    <div class="mb-2">
+        <label>FirstName</label>
+        <input class="form-control" asp-for="FirstName" />
+    </div>
+
+    <div class="mb-2">
+        <label>LastName</label>
+        <input class="form-control" asp-for="LastName" />
+    </div>
+
+    <div class="mb-2">
+        <label>Email</label>
+        <input class="form-control" asp-for="Email" />
+    </div>
+
+    <div class="mb-2">
+        <label>Password</label>
+        <input class="form-control" asp-for="Password" type="password" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Register</button>
+</form>
+
+<div class="text-danger mt-2">
+    @Html.ValidationSummary()
+</div>
