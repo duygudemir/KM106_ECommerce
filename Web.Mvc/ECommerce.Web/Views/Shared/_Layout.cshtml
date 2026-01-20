@@ -14,19 +14,22 @@
             <a class="navbar-brand" asp-controller="Home" asp-action="Index">ECommerce</a>
 
             <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Listing">Listing</a>
+                        <a class="nav-link text-light" asp-controller="Product" asp-action="Index">Ürünler</a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="AboutUs">About</a>
+                        <a class="nav-link text-light" asp-controller="Cart" asp-action="Index">Sepet</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Contact">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Cart" asp-action="AddProduct" asp-route-productId="1">Cart (test)</a>
-                    </li>
+
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-controller="Order" asp-action="MyOrders">Siparişlerim</a>
+                        </li>
+                    }
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
