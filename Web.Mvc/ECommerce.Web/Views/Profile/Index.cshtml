@@ -1,0 +1,35 @@
+﻿@model ECommerce.Web.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Profilim";
+}
+
+<h2>Profilim</h2>
+
+@if (ViewBag.Success != null)
+{
+    <div class="alert alert-success">@ViewBag.Success</div>
+}
+
+<form method="post">
+    <div class="mb-2">
+        <label>Ad</label>
+        <input class="form-control" asp-for="FirstName" />
+    </div>
+
+    <div class="mb-2">
+        <label>Soyad</label>
+        <input class="form-control" asp-for="LastName" />
+    </div>
+
+    <div class="mb-2">
+        <label>Email</label>
+        <input class="form-control" asp-for="Email" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Güncelle</button>
+</form>
+
+<div class="text-danger mt-2">
+    @Html.ValidationSummary()
+</div>
