@@ -2,9 +2,12 @@
 using App.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace ECommerce.Web.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         private readonly AppDbContext _db;
