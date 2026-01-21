@@ -18,6 +18,7 @@ namespace ECommerce.Admin.Controllers
             var comments = _db.ProductComments
                 .Include(c => c.Product)
                 .Include(c => c.User)
+                .Where(c => !c.IsConfirmed)
                 .OrderByDescending(c => c.Id)
                 .ToList();
 
