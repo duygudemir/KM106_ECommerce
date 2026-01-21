@@ -91,6 +91,10 @@ namespace ECommerce.Web.Controllers
                 new Claim(ClaimTypes.Email, user.Email)
             };
 
+            var roleName = _db.Roles.FirstOrDefault(r => r.Id == user.RoleId)?.Name ?? "Buyer";
+            claims.Add(new Claim(ClaimTypes.Role, roleName));
+
+
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
