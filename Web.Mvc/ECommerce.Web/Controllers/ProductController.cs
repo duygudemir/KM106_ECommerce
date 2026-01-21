@@ -4,6 +4,9 @@ using ECommerce.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 
 
 namespace ECommerce.Web.Controllers
@@ -15,6 +18,14 @@ namespace ECommerce.Web.Controllers
         public ProductController(AppDbContext db)
         {
             _db = db;
+        }
+        private int CurrentUserId
+        {
+            get
+            {
+                var idText = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                return int.Parse(idText!);
+            }
         }
 
         public IActionResult Create()
@@ -187,7 +198,7 @@ namespace ECommerce.Web.Controllers
             return View(products);
         }
 
-
+        [Authorize]
         public IActionResult Comment(int productId)
         {
             var product = _db.Products.FirstOrDefault(p => p.Id == productId && p.Enabled);
@@ -209,12 +220,11 @@ namespace ECommerce.Web.Controllers
                 return View(vm);
 
             
-            var currentUserId = 1;
 
             var comment = new ProductComment
             {
                 ProductId = vm.ProductId,
-                UserId = currentUserId,
+                UserId = CurrentUserId,
                 Text = vm.Text,
                 StarCount = (byte)vm.StarCount,
                 IsConfirmed = false,
