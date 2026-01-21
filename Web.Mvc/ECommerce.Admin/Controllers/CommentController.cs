@@ -51,5 +51,33 @@ namespace ECommerce.Admin.Controllers
 
             return RedirectToAction("List");
         }
+
+        public IActionResult Reject(int id)
+        {
+            var comment = _db.ProductComments
+                .Include(c => c.Product)
+                .Include(c => c.User)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (comment == null)
+                return NotFound();
+
+            return View(comment);
+        }
+
+        [HttpPost]
+        public IActionResult RejectConfirmed(int id)
+        {
+            var comment = _db.ProductComments.Find(id);
+
+            if (comment == null)
+                return NotFound();
+
+            _db.ProductComments.Remove(comment);
+            _db.SaveChanges();
+
+            return RedirectToAction("List");
+        }
+
     }
 }
