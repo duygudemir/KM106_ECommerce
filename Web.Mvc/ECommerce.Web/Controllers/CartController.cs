@@ -1,10 +1,13 @@
 ﻿using App.Data.Context;
 using App.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace ECommerce.Web.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         private readonly AppDbContext _db;
@@ -14,7 +17,14 @@ namespace ECommerce.Web.Controllers
             _db = db;
         }
 
-        private int CurrentUserId => 1;
+        private int CurrentUserId
+        {
+            get
+            {
+                var idText = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                return int.Parse(idText!);
+            }
+        }
 
         public IActionResult Index()
         {
@@ -29,12 +39,15 @@ namespace ECommerce.Web.Controllers
                 {
                     UserId = CurrentUserId,
                     CreatedAt = DateTime.Now,
-                    TotalPrice = 0
+                    TotalPrice = 0,
+                    IsCompleted = false
                 };
 
                 _db.Carts.Add(cart);
                 _db.SaveChanges();
             }
+
+            RecalculateCartTotal(cart.Id);
 
             return View(cart);
         }
@@ -57,12 +70,16 @@ namespace ECommerce.Web.Controllers
                 cart = new Cart
                 {
                     UserId = CurrentUserId,
-                    CreatedAt = DateTime.Now
+                    CreatedAt = DateTime.Now,
+                    TotalPrice = 0,
+                    IsCompleted = false
                 };
 
                 _db.Carts.Add(cart);
                 _db.SaveChanges();
             }
+
+            cart.CartItems ??= new List<CartItem>();
 
             var existingItem = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
 
@@ -80,8 +97,8 @@ namespace ECommerce.Web.Controllers
                     Quantity = (byte)quantity
                 });
             }
-            _db.SaveChanges();
 
+            _db.SaveChanges();
 
             RecalculateCartTotal(cart.Id);
 
@@ -94,7 +111,14 @@ namespace ECommerce.Web.Controllers
             if (quantity < 1) quantity = 1;
             if (quantity > 5) quantity = 5;
 
-            var item = _db.CartItems.FirstOrDefault(x => x.Id == cartItemId);
+            var item = _db.CartItems
+                .Include(x => x.Cart)
+                .FirstOrDefault(x =>
+                    x.Id == cartItemId &&
+                    x.Cart != null &&
+                    x.Cart.UserId == CurrentUserId &&
+                    !x.Cart.IsCompleted);
+
             if (item == null)
                 return NotFound();
 
@@ -109,7 +133,14 @@ namespace ECommerce.Web.Controllers
         [HttpPost]
         public IActionResult Remove(int cartItemId)
         {
-            var item = _db.CartItems.FirstOrDefault(x => x.Id == cartItemId);
+            var item = _db.CartItems
+                .Include(x => x.Cart)
+                .FirstOrDefault(x =>
+                    x.Id == cartItemId &&
+                    x.Cart != null &&
+                    x.Cart.UserId == CurrentUserId &&
+                    !x.Cart.IsCompleted);
+
             if (item == null)
                 return NotFound();
 
@@ -132,7 +163,9 @@ namespace ECommerce.Web.Controllers
 
             if (cart == null) return;
 
-            cart.TotalPrice = cart.CartItems.Sum(ci => (ci.Product != null ? ci.Product.Price : 0) * ci.Quantity);
+            cart.TotalPrice = cart.CartItems.Sum(ci =>
+                (ci.Product != null ? ci.Product.Price : 0) * ci.Quantity);
+
             _db.SaveChanges();
         }
     }
