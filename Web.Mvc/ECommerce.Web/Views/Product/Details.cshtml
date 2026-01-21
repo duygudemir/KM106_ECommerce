@@ -15,7 +15,18 @@
     <div><strong>Satıcı:</strong> @(Model.Seller != null ? Model.Seller.FirstName + " " + Model.Seller.LastName : "-")</div>
 </div>
 
-<a asp-action="Comment" asp-route-productId="@Model.Id" class="btn btn-success mb-4">Yorum Yap</a>
+@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    <a asp-action="Comment" asp-route-productId="@Model.Id" class="btn btn-success mb-4">
+        Yorum Yap
+    </a>
+}
+else
+{
+    <a asp-controller="Account" asp-action="Login" class="btn btn-secondary mb-4">
+        Yorum yapmak için giriş yap
+    </a>
+}
 
 <h3>Yorumlar (Onaylı)</h3>
 
