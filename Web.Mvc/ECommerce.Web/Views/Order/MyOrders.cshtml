@@ -18,6 +18,21 @@ else
             <div class="card-header">
                 <strong>Sipariş #@o.Id</strong> - @o.CreatedAt - Toplam: @o.TotalPrice
             </div>
+            <div>
+                @if (!o.IsCancelled)
+                {
+                    <form asp-action="Cancel" asp-controller="Order" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@o.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            İptal Et
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">İptal Edildi</span>
+                }
+            </div>
 
             <div class="card-body">
                 <table class="table table-sm">

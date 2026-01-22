@@ -76,5 +76,20 @@ namespace ECommerce.Web.Controllers
 
             return View(orders);
         }
+
+        [HttpPost]
+        public IActionResult Cancel(int id)
+        {
+            var order = _db.Orders.FirstOrDefault(o => o.Id == id && o.UserId == CurrentUserId);
+
+            if (order == null)
+                return NotFound();
+
+            order.IsCancelled = true;
+            _db.SaveChanges();
+
+            return RedirectToAction("MyOrders");
+        }
+
     }
 }
