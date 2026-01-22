@@ -85,6 +85,9 @@ namespace ECommerce.Web.Controllers
             if (order == null)
                 return NotFound();
 
+            if (order.IsCancelled)
+                return RedirectToAction("MyOrders");
+
             order.IsCancelled = true;
             _db.SaveChanges();
 
