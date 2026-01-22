@@ -18,5 +18,7 @@ namespace App.Data.Entities
         public DateTime CreatedAt { get; set; }
 
         public List<OrderItem> OrderItems { get; set; } = new();
+        public bool IsCancelled { get; set; } = false;
+
     }
 }
