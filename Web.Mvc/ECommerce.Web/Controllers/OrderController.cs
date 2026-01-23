@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace ECommerce.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "buyer")]
     public class OrderController : Controller
     {
         private readonly AppDbContext _db;
