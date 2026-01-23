@@ -28,12 +28,14 @@ namespace ECommerce.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "seller")]
         public IActionResult Create()
         {
             ViewBag.Categories = new SelectList(_db.Categories.ToList(), "Id", "Name");
             return View();
         }
 
+        [Authorize(Roles = "seller")]
         [HttpPost]
         public IActionResult Create(ProductCreateVm vm)
         {
@@ -64,6 +66,7 @@ namespace ECommerce.Web.Controllers
             return RedirectToAction("MyProducts");
         }
 
+        [Authorize(Roles = "seller")]
         public IActionResult MyProducts()
         {
             var sellerId = 1;
