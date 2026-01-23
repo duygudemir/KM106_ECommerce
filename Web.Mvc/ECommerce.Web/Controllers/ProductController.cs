@@ -1,13 +1,11 @@
 ﻿using App.Data.Context;
 using App.Data.Entities;
 using ECommerce.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-
-
 
 namespace ECommerce.Web.Controllers
 {
@@ -19,6 +17,7 @@ namespace ECommerce.Web.Controllers
         {
             _db = db;
         }
+
         private int CurrentUserId
         {
             get
@@ -45,12 +44,9 @@ namespace ECommerce.Web.Controllers
                 return View(vm);
             }
 
-            
-            var sellerId = 1;
-
             var product = new Product
             {
-                SellerId = sellerId,
+                SellerId = CurrentUserId, 
                 CategoryId = vm.CategoryId,
                 Name = vm.Name,
                 Price = vm.Price,
@@ -69,20 +65,18 @@ namespace ECommerce.Web.Controllers
         [Authorize(Roles = "seller")]
         public IActionResult MyProducts()
         {
-            var sellerId = 1;
-
             var products = _db.Products
-                .Where(p => p.SellerId == sellerId)
+                .Where(p => p.SellerId == CurrentUserId) 
+                .OrderByDescending(p => p.Id)
                 .ToList();
 
             return View(products);
         }
 
+        [Authorize(Roles = "seller")]
         public IActionResult EditPrice(int id)
         {
-            var sellerId = 1;
-
-            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == sellerId);
+            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == CurrentUserId);
             if (product == null)
                 return NotFound();
 
@@ -95,15 +89,14 @@ namespace ECommerce.Web.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = "seller")]
         [HttpPost]
         public IActionResult EditPrice(ProductEditPriceVm vm)
         {
             if (!ModelState.IsValid)
                 return View(vm);
 
-            var sellerId = 1;
-
-            var product = _db.Products.FirstOrDefault(p => p.Id == vm.Id && p.SellerId == sellerId);
+            var product = _db.Products.FirstOrDefault(p => p.Id == vm.Id && p.SellerId == CurrentUserId);
             if (product == null)
                 return NotFound();
 
@@ -113,11 +106,10 @@ namespace ECommerce.Web.Controllers
             return RedirectToAction("MyProducts");
         }
 
+        [Authorize(Roles = "seller")]
         public IActionResult EditStock(int id)
         {
-            var sellerId = 1;
-
-            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == sellerId);
+            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == CurrentUserId);
             if (product == null)
                 return NotFound();
 
@@ -130,15 +122,14 @@ namespace ECommerce.Web.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = "seller")]
         [HttpPost]
         public IActionResult EditStock(ProductEditStockVm vm)
         {
             if (!ModelState.IsValid)
                 return View(vm);
 
-            var sellerId = 1;
-
-            var product = _db.Products.FirstOrDefault(p => p.Id == vm.Id && p.SellerId == sellerId);
+            var product = _db.Products.FirstOrDefault(p => p.Id == vm.Id && p.SellerId == CurrentUserId);
             if (product == null)
                 return NotFound();
 
@@ -148,12 +139,11 @@ namespace ECommerce.Web.Controllers
             return RedirectToAction("MyProducts");
         }
 
+        [Authorize(Roles = "seller")]
         [HttpPost]
         public IActionResult ToggleEnabled(int id)
         {
-            var sellerId = 1;
-
-            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == sellerId);
+            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == CurrentUserId);
             if (product == null)
                 return NotFound();
 
@@ -163,23 +153,21 @@ namespace ECommerce.Web.Controllers
             return RedirectToAction("MyProducts");
         }
 
-
+        [Authorize(Roles = "seller")]
         public IActionResult Delete(int id)
         {
-            var sellerId = 1;
-
-            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == sellerId);
+            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == CurrentUserId);
             if (product == null)
                 return NotFound();
 
             return View(product);
         }
+
+        [Authorize(Roles = "seller")]
         [HttpPost]
         public IActionResult DeleteConfirmed(int id)
         {
-            var sellerId = 1;
-
-            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == sellerId);
+            var product = _db.Products.FirstOrDefault(p => p.Id == id && p.SellerId == CurrentUserId);
             if (product == null)
                 return NotFound();
 
@@ -216,13 +204,12 @@ namespace ECommerce.Web.Controllers
             return View(vm);
         }
 
+        [Authorize] 
         [HttpPost]
         public IActionResult Comment(ProductCommentCreateVm vm)
         {
             if (!ModelState.IsValid)
                 return View(vm);
-
-            
 
             var comment = new ProductComment
             {
@@ -259,6 +246,5 @@ namespace ECommerce.Web.Controllers
             ViewBag.Comments = comments;
             return View(product);
         }
-
     }
 }
