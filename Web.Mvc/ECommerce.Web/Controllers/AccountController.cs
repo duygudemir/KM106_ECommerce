@@ -53,6 +53,17 @@ namespace ECommerce.Web.Controllers
                 CreatedAt = DateTime.Now
             };
 
+            var selectedRole = _db.Roles.FirstOrDefault(r => r.Name == model.Role);
+
+            if (selectedRole == null)
+            {
+                ModelState.AddModelError("", "Seçilen rol bulunamadı.");
+                return View(model);
+            }
+
+            user.RoleId = selectedRole.Id;
+
+
             _db.Users.Add(user);
             _db.SaveChanges();
 
