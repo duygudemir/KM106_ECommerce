@@ -22,7 +22,7 @@ namespace ECommerce.Web.Models
         [Compare("Password", ErrorMessage = "Parolalar eşleşmiyor.")]
         public string ConfirmPassword { get; set; }
 
-        public string Role { get; set; } = "buyer";
+        public string Role { get; set; } = "";
 
     }
 }
