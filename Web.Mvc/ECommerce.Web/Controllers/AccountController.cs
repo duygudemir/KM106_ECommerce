@@ -67,8 +67,15 @@ namespace ECommerce.Web.Controllers
             _db.Users.Add(user);
             _db.SaveChanges();
 
-            return RedirectToAction("Login");
+            TempData["RegisterSuccess"] = "Kaydınız alınmıştır. Admin onayı sonrası giriş yapabilirsiniz.";
+            return RedirectToAction("RegisterSuccess");
+
         }
+        public IActionResult RegisterSuccess()
+        {
+            return View();
+        }
+
 
         public IActionResult Login()
         {
