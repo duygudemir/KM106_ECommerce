@@ -1,48 +1,126 @@
 ﻿@model App.Data.Entities.Product
 
 @{
-    ViewData["Title"] = "Ürün Detayı";
+    ViewData["Title"] = "Ürün Detay";
     var comments = ViewBag.Comments as List<App.Data.Entities.ProductComment> ?? new();
 }
 
-<h1>Ürün Detayı</h1>
+<div class="row">
+    <div class="col-md-8">
 
-<div class="mb-3">
-    <div><strong>Ad:</strong> @Model.Name</div>
-    <div><strong>Fiyat:</strong> @Model.Price</div>
-    <div><strong>Stok:</strong> @Model.StockAmount</div>
-    <div><strong>Kategori:</strong> @(Model.Category?.Name ?? "-")</div>
-    <div><strong>Satıcı:</strong> @(Model.Seller != null ? Model.Seller.FirstName + " " + Model.Seller.LastName : "-")</div>
+        <div class="card mb-3">
+            <div class="card-header">
+                <h3 class="mb-0">@Model.Name</h3>
+            </div>
+
+            <div class="card-body">
+                <p class="mb-2">
+                    <strong>Fiyat:</strong> @Model.Price
+                </p>
+
+                <p class="mb-2">
+                    <strong>Kategori:</strong>
+                    @(Model.Category != null ? Model.Category.Name : "-")
+                </p>
+
+                <p class="mb-3">
+                    <strong>Satıcı:</strong>
+                    @(Model.Seller != null ? (Model.Seller.FirstName + " " + Model.Seller.LastName) : "-")
+                </p>
+
+                <hr />
+
+                <h5>Ürün Açıklaması</h5>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Details))
+                {
+                    <p class="mb-0">@Model.Details</p>
+                }
+                else
+                {
+                    <div class="text-muted">Bu ürün için açıklama girilmemiş.</div>
+                }
+            </div>
+        </div>
+
+        <a class="btn btn-secondary" asp-controller="Product" asp-action="Index">← Geri</a>
+
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <strong>Yorumlar (@comments.Count)</strong>
+            </div>
+
+            <div class="card-body">
+
+                @if (!comments.Any())
+                {
+                    <div class="text-muted">Henüz yorum yok.</div>
+                }
+                else
+                {
+                    @foreach (var c in comments)
+                    {
+                        <div class="border rounded p-2 mb-2">
+                            <div class="small text-muted">
+                                @(c.User != null ? (c.User.FirstName + " " + c.User.LastName) : "Kullanıcı")
+                            </div>
+
+                            <div class="small text-warning mb-1">
+                                Puan: @c.StarCount / 5
+                            </div>
+
+                            <div>@c.Text</div>
+                        </div>
+                    }
+                }
+
+                <hr />
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("buyer"))
+                {
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <strong>Yeni Yorum Ekle</strong>
+                        </div>
+
+                        <div class="card-body">
+                            <form asp-controller="Product" asp-action="Comment" method="post">
+                                <input type="hidden" name="ProductId" value="@Model.Id" />
+
+                                <div class="mb-2">
+                                    <label class="form-label">Puan</label>
+                                    <select name="StarCount" class="form-select">
+                                        <option value="5">5 - Harika</option>
+                                        <option value="4">4 - İyi</option>
+                                        <option value="3">3 - Orta</option>
+                                        <option value="2">2 - Kötü</option>
+                                        <option value="1">1 - Çok Kötü</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label class="form-label">Yorum</label>
+                                    <textarea name="Text" class="form-control" rows="3" placeholder="Yorumuz onaylandığında yayınlanacaktır."></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">
+                                    Gönder
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-muted small">
+                        Yorum yazmak için buyer olarak giriş yapmalısın.
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
 </div>
-
-@if (User.Identity != null && User.Identity.IsAuthenticated)
-{
-    <a asp-action="Comment" asp-route-productId="@Model.Id" class="btn btn-success mb-4">
-        Yorum Yap
-    </a>
-}
-else
-{
-    <a asp-controller="Account" asp-action="Login" class="btn btn-secondary mb-4">
-        Yorum yapmak için giriş yap
-    </a>
-}
-
-<h3>Yorumlar (Onaylı)</h3>
-
-@if (!comments.Any())
-{
-    <div class="text-muted">Henüz onaylı yorum yok.</div>
-}
-else
-{
-    <ul class="list-group">
-        @foreach (var c in comments)
-        {
-            <li class="list-group-item">
-                <div><strong>Yıldız:</strong> @c.StarCount / 5</div>
-                <div>@c.Text</div>
-            </li>
-        }
-    </ul>
-}
