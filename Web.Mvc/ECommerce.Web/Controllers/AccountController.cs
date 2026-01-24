@@ -76,7 +76,7 @@ namespace ECommerce.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -95,21 +95,22 @@ namespace ECommerce.Web.Controllers
                 return View(model);
             }
 
+            var roleName = _db.Roles.FirstOrDefault(r => r.Id == user.RoleId)?.Name ?? "buyer";
+
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, roleName.ToLower())
             };
-
-            var roleName = _db.Roles.FirstOrDefault(r => r.Id == user.RoleId)?.Name ?? "Buyer";
-            claims.Add(new Claim(ClaimTypes.Role, roleName));
 
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
-            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
             return RedirectToAction("Index", "Product");
         }
