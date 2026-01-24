@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Hesabım";
+}
+
+<h1 class="mb-4">Hesabım</h1>
+
+<div class="d-flex flex-column gap-3" style="max-width:700px;">
+    
+    <a class="card p-3 text-decoration-none text-dark border"
+       asp-controller="Order" asp-action="MyOrders">
+        <h5 class="mb-1">→ Siparişlerim</h5>
+        <div class="text-muted">Geçmiş siparişlerini görüntüle</div>
+    </a>
+
+    <a class="card p-3 text-decoration-none text-dark border"
+       asp-controller="Profile" asp-action="Index">
+        <h5 class="mb-1">→ Profil Ayarları</h5>
+        <div class="text-muted">Bilgilerini güncelle</div>
+    </a>
+
+    <a class="card p-3 text-decoration-none border border-danger text-danger"
+       asp-controller="Account" asp-action="Logout">
+        <h5 class="mb-1">→ Çıkış Yap</h5>
+        <div class="text-muted">Oturumu kapat</div>
+    </a>
+
+</div>

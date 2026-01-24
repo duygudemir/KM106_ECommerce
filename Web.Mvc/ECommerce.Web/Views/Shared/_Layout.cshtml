@@ -9,25 +9,21 @@
     <link rel="stylesheet" href="~/ECommerce.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
+
             <a class="navbar-brand" asp-controller="Home" asp-action="Index">ECommerce</a>
 
-            <button class="navbar-toggler" type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#mainNavbar"
-                    aria-controls="mainNavbar"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <div class="collapse navbar-collapse">
 
-            <div class="collapse navbar-collapse" id="mainNavbar">
+                <!-- SOL MENÜ -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                     <li class="nav-item">
                         <a class="nav-link text-light" asp-controller="Product" asp-action="Index">Ürünler</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link text-light" asp-controller="Home" asp-action="About">Hakkımızda</a>
                     </li>
@@ -36,31 +32,12 @@
                         <a class="nav-link text-light" asp-controller="Home" asp-action="Contact">İletişim</a>
                     </li>
 
-
-                    @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("buyer"))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Cart" asp-action="Index">Sepet</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Order" asp-action="MyOrders">Siparişlerim</a>
-                        </li>
-                    }
-
                     @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("seller"))
                     {
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-controller="Product" asp-action="MyProducts">Ürünlerim</a>
                         </li>
                     }
-
-                    @* @if (User.Identity != null && User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Profile" asp-action="Index">Profile</a>
-                        </li>
-                    } *@
 
                     @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("admin"))
                     {
@@ -72,13 +49,25 @@
                             </a>
                         </li>
                     }
+
                 </ul>
 
+                <!-- SAĞ MENÜ -->
                 <ul class="navbar-nav">
+
+                    @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("buyer"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-controller="Cart" asp-action="Index" title="Sepet">
+                                🛒
+                            </a>
+                        </li>
+                    }
+
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Profile" asp-action="Index">
+                            <a class="nav-link text-light" asp-controller="Profile" asp-action="Menu">
                                 @User.Identity.Name
                             </a>
                         </li>
@@ -99,7 +88,9 @@
                             <a class="nav-link text-light" asp-controller="Account" asp-action="Register">Register</a>
                         </li>
                     }
+
                 </ul>
+
             </div>
         </div>
     </nav>
@@ -115,6 +106,7 @@
     </footer>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
