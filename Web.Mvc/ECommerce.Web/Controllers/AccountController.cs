@@ -98,7 +98,7 @@ namespace ECommerce.Web.Controllers
 
             if (!user.Enabled)
             {
-                ModelState.AddModelError("", "Hesabınız admin tarafından onaylanmadı.");
+                ModelState.AddModelError("", "Hesabınız henüz onaylanmadı. Admin onayından sonra giriş yapabilirsiniz.");
                 return View(model);
             }
 
