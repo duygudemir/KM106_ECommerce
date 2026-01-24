@@ -1,8 +1,49 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Admin Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1 class="mb-4">Admin Dashboard</h1>
+
+<div class="row g-3">
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">👤 Toplam Kullanıcı</h5>
+                <h2 class="mb-0">@ViewBag.UserCount</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">📦 Toplam Ürün</h5>
+                <h2 class="mb-0">@ViewBag.ProductCount</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">⏳ Bekleyen Yorum</h5>
+                <h2 class="mb-0">@ViewBag.PendingCommentCount</h2>
+
+                <div class="mt-2">
+                    <a class="btn btn-sm btn-outline-primary"
+                       asp-controller="Comment" asp-action="List">
+                        Bekleyen Yorumlara Git →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-4" />
+
+<div class="alert alert-info">
+    Admin panel üzerinden kullanıcı onayı, ürün yönetimi ve yorum onay işlemleri yapılabilir.
 </div>
