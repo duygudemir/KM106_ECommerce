@@ -15,8 +15,6 @@
             <th>Satıcı</th>
             <th>İşlemler</th>
             <th>Sepet</th>
-
-
         </tr>
     </thead>
     <tbody>
@@ -33,9 +31,28 @@
                     </a>
                 </td>
                 <td>
-                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@p.Id" class="btn btn-sm btn-success">
-                        Sepete Ekle
-                    </a>
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("buyer"))
+                        {
+                            <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@p.Id" class="btn btn-primary btn-sm">
+                                Sepete Ekle
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary btn-sm">
+                                Müşteri hesabınızla giriş yapınız
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary btn-sm">
+                            Sepete eklemek için giriş yap
+                        </a>
+                    }
+
                 </td>
 
             </tr>
