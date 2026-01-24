@@ -1,18 +1,27 @@
 using App.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
+using System.IO;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(@"C:\ECommerceKeys"))
+    .SetApplicationName("KM106_ECommerce");
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
+        options.Cookie.Name = "ECommerceAdminAuth";
         options.LoginPath = "/Account/Login";
         options.AccessDeniedPath = "/Account/Login";
     });
+builder.Services.AddAuthorization();
+
 
 builder.Services.AddAuthorization();
 
