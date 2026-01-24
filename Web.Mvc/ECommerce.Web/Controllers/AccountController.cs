@@ -67,8 +67,15 @@ namespace ECommerce.Web.Controllers
             _db.Users.Add(user);
             _db.SaveChanges();
 
-            return RedirectToAction("Login");
+            TempData["RegisterSuccess"] = "Kaydınız alınmıştır. Admin onayı sonrası giriş yapabilirsiniz.";
+            return RedirectToAction("RegisterSuccess");
+
         }
+        public IActionResult RegisterSuccess()
+        {
+            return View();
+        }
+
 
         public IActionResult Login()
         {
@@ -91,7 +98,7 @@ namespace ECommerce.Web.Controllers
 
             if (!user.Enabled)
             {
-                ModelState.AddModelError("", "Hesabınız admin tarafından onaylanmadı.");
+                ModelState.AddModelError("", "Hesabınız henüz onaylanmadı. Admin onayından sonra giriş yapabilirsiniz.");
                 return View(model);
             }
 
