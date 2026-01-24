@@ -30,6 +30,23 @@
                     <a class="nav-link" asp-controller="Comment" asp-action="List">Comments</a>
                 </li>
             </ul>
+            <ul class="navbar-nav ms-auto">
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <span class="nav-link text-light">
+                            @User.Identity.Name
+                        </span>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-light" asp-controller="Account" asp-action="Logout">
+                            Logout
+                        </a>
+                    </li>
+                }
+            </ul>
+
 
         </div>
     </nav>
