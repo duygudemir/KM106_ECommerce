@@ -2,11 +2,58 @@
     ViewData["Title"] = "Anasayfa";
 }
 
-<div class="p-4 bg-light rounded">
+<div class="p-4 p-md-5 bg-light rounded">
     <h1 class="mb-2">ECommerce</h1>
-    <p class="text-muted mb-3">
-        Basit bir e-ticaret demo projesi. Ürünleri inceleyebilir, sepete ekleyip sipariş verebilirsin.
+    <p class="text-muted mb-4">
+        Alıcıların ürünleri inceleyip sipariş verebildiği, satıcıların ürün yönetimi yapabildiği örnek bir e-ticaret uygulaması.
     </p>
 
-    <a class="btn btn-primary" asp-controller="Product" asp-action="Index">Ürünleri Gör</a>
+    <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-primary" asp-controller="Product" asp-action="Index">
+            Ürünleri Gör
+        </a>
+
+        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="About">
+            Hakkımızda
+        </a>
+
+        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Contact">
+            İletişim
+        </a>
+    </div>
+</div>
+
+<div class="row mt-4 g-3">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">🛒 Kolay Alışveriş</h5>
+                <p class="card-text text-muted mb-0">
+                    Ürünleri incele, sepete ekle ve sipariş ver.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">📦 Satıcı Paneli</h5>
+                <p class="card-text text-muted mb-0">
+                    Satıcı hesabıyla ürünlerini yönetebilirsin.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">✅ Admin Onayı</h5>
+                <p class="card-text text-muted mb-0">
+                    Yorumlar admin onayından sonra yayınlanır.
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
