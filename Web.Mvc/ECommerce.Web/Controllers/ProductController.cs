@@ -189,7 +189,7 @@ namespace ECommerce.Web.Controllers
             return View(products);
         }
 
-        [Authorize]
+        [Authorize(Roles = "buyer")]
         public IActionResult Comment(int productId)
         {
             var product = _db.Products.FirstOrDefault(p => p.Id == productId && p.Enabled);
@@ -211,10 +211,16 @@ namespace ECommerce.Web.Controllers
             if (!ModelState.IsValid)
                 return View(vm);
 
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdStr))
+                return RedirectToAction("Login", "Account");
+
+            var userId = int.Parse(userIdStr);
+
             var comment = new ProductComment
             {
                 ProductId = vm.ProductId,
-                UserId = CurrentUserId,
+                UserId = userId,
                 Text = vm.Text,
                 StarCount = (byte)vm.StarCount,
                 IsConfirmed = false,

@@ -67,12 +67,58 @@
                             <div class="small text-muted">
                                 @(c.User != null ? (c.User.FirstName + " " + c.User.LastName) : "Kullanıcı")
                             </div>
+
+                            <div class="small text-warning mb-1">
+                                Puan: @c.StarCount / 5
+                            </div>
+
                             <div>@c.Text</div>
                         </div>
                     }
                 }
 
-                <hr />               
+                <hr />
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("buyer"))
+                {
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <strong>Yeni Yorum Ekle</strong>
+                        </div>
+
+                        <div class="card-body">
+                            <form asp-controller="Product" asp-action="Comment" method="post">
+                                <input type="hidden" name="ProductId" value="@Model.Id" />
+
+                                <div class="mb-2">
+                                    <label class="form-label">Puan</label>
+                                    <select name="StarCount" class="form-select">
+                                        <option value="5">5 - Harika</option>
+                                        <option value="4">4 - İyi</option>
+                                        <option value="3">3 - Orta</option>
+                                        <option value="2">2 - Kötü</option>
+                                        <option value="1">1 - Çok Kötü</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label class="form-label">Yorum</label>
+                                    <textarea name="Text" class="form-control" rows="3" placeholder="Yorumuz onaylandığında yayınlanacaktır."></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">
+                                    Gönder
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-muted small">
+                        Yorum yazmak için buyer olarak giriş yapmalısın.
+                    </div>
+                }
 
             </div>
         </div>
