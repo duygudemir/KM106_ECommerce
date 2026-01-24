@@ -2,10 +2,12 @@ using ECommerce.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using App.Data.Context;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace ECommerce.Admin.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class HomeController : Controller
     {
         private readonly AppDbContext _db;

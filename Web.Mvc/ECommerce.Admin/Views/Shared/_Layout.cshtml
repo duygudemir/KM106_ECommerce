@@ -13,19 +13,24 @@
         <div class="container">
             <a class="navbar-brand" asp-controller="Home" asp-action="Index">Admin Panel</a>
 
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Category" asp-action="Create">Category</a>
-                    <a class="nav-link" asp-controller="Category" asp-action="List">Category List</a>
-
+                    <a class="nav-link" asp-controller="Product" asp-action="Index">Products</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="User" asp-action="List">Users</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Category" asp-action="List">Categories</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Comment" asp-action="List">Comments</a>
                 </li>
             </ul>
+
         </div>
     </nav>
 
