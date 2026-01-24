@@ -2,5 +2,11 @@
     ViewData["Title"] = "Anasayfa";
 }
 
-<h1>Anasayfa</h1>
-<p>Layout çalışıyorsa üstte menü ve altta footer görürsün.</p>
+<div class="p-4 bg-light rounded">
+    <h1 class="mb-2">ECommerce</h1>
+    <p class="text-muted mb-3">
+        Basit bir e-ticaret demo projesi. Ürünleri inceleyebilir, sepete ekleyip sipariş verebilirsin.
+    </p>
+
+    <a class="btn btn-primary" asp-controller="Product" asp-action="Index">Ürünleri Gör</a>
+</div>

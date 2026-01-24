@@ -1,35 +1,42 @@
 ﻿@model ECommerce.Web.Models.ProfileViewModel
 
 @{
-    ViewData["Title"] = "Profilim";
+    ViewData["Title"] = "Profil Ayarları";
 }
 
-<h2>Profilim</h2>
+<h1 class="mb-4">Profil Ayarları</h1>
 
 @if (ViewBag.Success != null)
 {
-    <div class="alert alert-success">@ViewBag.Success</div>
+    <div class="alert alert-success">
+        @ViewBag.Success
+    </div>
 }
 
-<form method="post">
-    <div class="mb-2">
-        <label>Ad</label>
+<form method="post" style="max-width:600px;">
+
+    <div class="mb-3">
+        <label class="form-label">Ad</label>
         <input class="form-control" asp-for="FirstName" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
 
-    <div class="mb-2">
-        <label>Soyad</label>
+    <div class="mb-3">
+        <label class="form-label">Soyad</label>
         <input class="form-control" asp-for="LastName" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
     </div>
 
-    <div class="mb-2">
-        <label>Email</label>
+    <div class="mb-3">
+        <label class="form-label">Email</label>
         <input class="form-control" asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
-    <button class="btn btn-primary" type="submit">Güncelle</button>
+    <button class="btn btn-primary" type="submit">Kaydet</button>
+    <a class="btn btn-secondary ms-2" asp-controller="Profile" asp-action="Menu">Geri</a>
 </form>
 
-<div class="text-danger mt-2">
+<div class="text-danger mt-3">
     @Html.ValidationSummary()
 </div>

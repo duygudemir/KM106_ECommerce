@@ -24,6 +24,10 @@ namespace ECommerce.Web.Controllers
                 return int.Parse(idText!);
             }
         }
+        public IActionResult Menu()
+        {
+            return View();
+        }
 
         public IActionResult Index()
         {
