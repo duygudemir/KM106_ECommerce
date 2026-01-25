@@ -4,24 +4,48 @@
 
 <h1 class="mb-4">Hesabım</h1>
 
-<div class="d-flex flex-column gap-3" style="max-width:700px;">
-    
-    <a class="card p-3 text-decoration-none text-dark border"
-       asp-controller="Order" asp-action="MyOrders">
-        <h5 class="mb-1">→ Siparişlerim</h5>
-        <div class="text-muted">Geçmiş siparişlerini görüntüle</div>
-    </a>
+<div class="row g-3" style="max-width:700px;">
 
-    <a class="card p-3 text-decoration-none text-dark border"
-       asp-controller="Profile" asp-action="Index">
-        <h5 class="mb-1">→ Profil Ayarları</h5>
-        <div class="text-muted">Bilgilerini güncelle</div>
-    </a>
+    <div class="col-12">
+        <a asp-controller="Order" asp-action="MyOrders" class="text-decoration-none">
+            <div class="p-4 border rounded shadow-sm account-card">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="account-icon bg-primary-subtle text-primary">🧾</div>
+                    <div>
+                        <h5 class="mb-1">Siparişlerim</h5>
+                        <div class="text-muted">Geçmiş siparişlerini görüntüle</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
 
-    <a class="card p-3 text-decoration-none border border-danger text-danger"
-       asp-controller="Account" asp-action="Logout">
-        <h5 class="mb-1">→ Çıkış Yap</h5>
-        <div class="text-muted">Oturumu kapat</div>
-    </a>
+    <div class="col-12">
+        <a asp-controller="Profile" asp-action="Index" class="text-decoration-none">
+            <div class="p-4 border rounded shadow-sm account-card">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="account-icon bg-success-subtle text-success">⚙️</div>
+                    <div>
+                        <h5 class="mb-1">Profil Ayarları</h5>
+                        <div class="text-muted">Bilgilerini güncelle</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-12">
+        <a asp-controller="Account" asp-action="Logout" class="text-decoration-none">
+            <div class="p-4 border rounded shadow-sm account-card account-card-danger">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="account-icon bg-danger-subtle text-danger">🚪</div>
+                    <div>
+                        <h5 class="mb-1 text-danger">Çıkış Yap</h5>
+                        <div class="text-muted">Oturumu kapat</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
 
 </div>

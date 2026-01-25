@@ -1,9 +1,11 @@
 ﻿using App.Data.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerce.Admin.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class CommentController : Controller
     {
         private readonly AppDbContext _db;
